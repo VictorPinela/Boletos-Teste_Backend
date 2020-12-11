@@ -2,7 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const codigoInput = require('./componentes/CodigoInput');
+const codigoInputTitulo = require('./componentes/codigoTitulo/CodigoInput');
+const codigoInputConvenio = require('./componentes/codigoConvenio/CodigoInput');
 
 const app = express();
 
@@ -26,15 +27,29 @@ app.post('/', (req, res) => {
   if (!codigo) {
     return res.status(500).send({ message: 'Falha ao ler codigo' });
   };
-  var aux = codigoInput.codigoInput(codFormatado);
-  if (aux == 0) {
-    return res.status(500).send({ message: 'Codigo invalido' });
+  if (codFormatado.length == 47) {
+    var aux = codigoInputTitulo.codigoInputTitulo(codFormatado);
+    if (aux == 0) {
+      return res.status(500).send({ message: 'Codigo invalido' });
+    } else {
+      info.push(aux);
+      return res.json({ codigo });
+    };
   } else {
-    info.push(aux);
-    return res.json({ codigo });
+    if (codFormatado.length == 48) {
+      var aux = codigoInputConvenio.codigoInputConvenio(codFormatado);
+      if (aux == 0) {
+        return res.status(500).send({ message: 'Codigo invalido' });
+      } else {
+        info.push(aux);
+        return res.json({ codigo });
+      };
+    } else {
+      return res.status(500).send({ message: 'Codigo invalido' });
+    }
   };
 });
 
-app.listen(8080, () => console.log('Express started at http://localhost:8080'));
+app.listen(8080, () => console.log('API iniciada em http://localhost:8080'));
 
 
