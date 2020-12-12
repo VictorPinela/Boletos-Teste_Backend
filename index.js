@@ -29,23 +29,15 @@ app.post('/', (req, res) => {
   };
   if (codFormatado.length == 47) {
     var aux = codigoInputTitulo.codigoInputTitulo(codFormatado);
-    if (aux == 0) {
-      return res.status(500).send({ message: 'Codigo invalido' });
-    } else {
-      info.push(aux);
-      return res.json({ codigo });
-    };
+    info.push(aux);
+    return res.json({ codigo });
   } else {
     if (codFormatado.length == 48) {
       var aux = codigoInputConvenio.codigoInputConvenio(codFormatado);
-      if (aux == 0) {
-        return res.status(500).send({ message: 'Codigo invalido' });
-      } else {
-        info.push(aux);
-        return res.json({ codigo });
-      };
+      info.push(aux);
+      return res.json({ codigo });
     } else {
-      return res.status(500).send({ message: 'Codigo invalido' });
+      return res.json({ "Linha digitada": "Invalida" });;
     }
   };
 });

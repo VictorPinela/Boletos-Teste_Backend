@@ -1,13 +1,12 @@
 exports.primValidacao = (codigo) => {
   var dv = codigo[2];
-  var val1 = Valida1(codigo, dv);
-  var val2 = Valida2(codigo, dv);
-  var val3 = Valida3(codigo, dv);
-  var val4 = Valida4(codigo, dv);
-  if (val1 == 1 && val2 == 1 && val3 == 1 && val4 == 1) {
-    return 1;
+  if (Valida1(codigo, dv) &&
+    Valida2(codigo, dv) &&
+    Valida3(codigo, dv) &&
+    Valida4(codigo, dv)) {
+    return true;
   } else {
-    return 0;
+    return false;
   };
 };
 
@@ -31,9 +30,9 @@ function Valida1(cod, dv) {
     }
 
     if (10 - val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
   if (dv == 8 || dv == 9) {
@@ -44,19 +43,21 @@ function Valida1(cod, dv) {
         mult = 2;
       }
     }
-    val = cont % 11;
-    if (val == 1) {
+    aux = cont % 11;
+    if (aux == 1 || aux == 0) {
       val = 0;
     } else {
-      if (val == 10) {
+      if (aux == 10) {
         val = 1;
+      } else {
+        val = 11 - aux;
       }
     };
-    if (val == chave) {
-      return 1;
-    } else {
-      return 0;
-    }
+  }
+  if (val == chave) {
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -80,9 +81,9 @@ function Valida2(cod, dv) {
     }
 
     if (10 - val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
   if (dv == 8 || dv == 9) {
@@ -93,19 +94,21 @@ function Valida2(cod, dv) {
         mult = 2;
       }
     }
-    val = cont % 11;
-    if (val == 1) {
+    aux = cont % 11;
+    if (aux == 1 || aux == 0) {
       val = 0;
     } else {
-      if (val == 10) {
+      if (aux == 10) {
         val = 1;
+      } else {
+        val = 11 - aux;
       }
     };
-    if (val == chave) {
-      return 1;
-    } else {
-      return 0;
-    }
+  }
+  if (val == chave) {
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -129,9 +132,9 @@ function Valida3(cod, dv) {
     }
 
     if (10 - val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
   if (dv == 8 || dv == 9) {
@@ -142,19 +145,21 @@ function Valida3(cod, dv) {
         mult = 2;
       }
     }
-    val = cont % 11;
-    if (val == 1) {
+    aux = cont % 11;
+    if (aux == 1 || aux == 0) {
       val = 0;
     } else {
-      if (val == 10) {
+      if (aux == 10) {
         val = 1;
+      } else {
+        val = 11 - aux;
       }
     };
-    if (val == chave) {
-      return 1;
-    } else {
-      return 0;
-    }
+  }
+  if (val == chave) {
+    return true;
+  } else {
+    return false;
   }
 };
 
@@ -178,9 +183,9 @@ function Valida4(cod, dv) {
     }
 
     if (10 - val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
   if (dv == 8 || dv == 9) {
@@ -191,18 +196,20 @@ function Valida4(cod, dv) {
         mult = 2;
       }
     }
-    val = cont % 11;
-    if (val == 1) {
+    aux = cont % 11;
+    if (aux == 1 || aux == 0) {
       val = 0;
     } else {
-      if (val == 10) {
+      if (aux == 10) {
         val = 1;
+      } else {
+        val = 11 - aux;
       }
     };
-    if (val == chave) {
-      return 1;
-    } else {
-      return 0;
-    }
+  }
+  if (val == chave) {
+    return true;
+  } else {
+    return false;
   }
 };

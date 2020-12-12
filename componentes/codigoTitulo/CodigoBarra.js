@@ -1,15 +1,17 @@
 exports.codBarra = (cod) => {
   var info = [];
   var barra = orgBarra(cod);
-  if (barra != 0) {
+  if (barra != false) {
     var val = recolheValor(barra);
     var venc = recolheVencimento(barra);
-    info.push({ "Codigo de barra": barra });
+    info.push({ "Linha digitada": "Valida" });
     info.push({ "Valor": val });
     info.push({ "Vencimento": venc });
+    info.push({ "Codigo de barra": barra });
     return info;
   } else {
-    return 0;
+    info.push({ "Linha digitada": "Invalida" });
+    return info;
   }
 };
 
@@ -28,10 +30,10 @@ function recolheVencimento(cod) {
   for (i = 5; i <= 8; i++) {
     aux += cod[i];
   }
-  var a = parseInt(aux);
-  a -= 1000;
+  var dias = parseInt(aux);
+  dias -= 1000;
   var data = new Date(2000, 6, 3);
-  data.setDate(data.getDate() + a);
+  data.setDate(data.getDate() + dias);
   var venc = formataData(data);
   return (venc);
 };
@@ -55,11 +57,10 @@ function orgBarra(cod) {
   for (i = 33; i < 47; i++) {
     aux[i - 28] = cod[i];
   };
-  segval = segvalidacao(aux);
-  if (segval == 1) {
+  if (segvalidacao(aux)) {
     return aux;
   } else {
-    return 0;
+    return false;
   }
 };
 
@@ -81,9 +82,9 @@ function segvalidacao(cod) {
     aux = 1;
   };
   if (aux == chave) {
-    return 1;
+    return true;
   } else {
-    return 0;
+    return false;
   }
 };
 

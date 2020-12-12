@@ -1,15 +1,17 @@
 exports.codBarra = (cod) => {
   var info = [];
   var barra = orgBarra(cod);
-  if (barra != 0) {
+  if (barra != false) {
     var val = recolheValor(barra);
     var venc = recolheVencimento(barra);
-    info.push({ "Codigo de barra": barra });
+    info.push({ "Linha digitada": "Valida" });
     info.push({ "Valor": val });
     info.push({ "Vencimento": venc });
+    info.push({ "Codigo de barra": barra });
     return info;
   } else {
-    return 0;
+    info.push({ "Linha digitada": "Invalida" });
+    return info;
   }
 };
 
@@ -23,42 +25,46 @@ function recolheValor(cod) {
     val = parseInt(aux) / 100;
     return (val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
   }
-  if (cod[2] == 7 || cod[2] == 9){
+  if (cod[2] == 7 || cod[2] == 9) {
     val = aux;
-    return ({"Valor referencia": val});
+    return ({ "Valor referencia": val });
   }
 };
 
 function recolheVencimento(cod) {
   var i, aux = [];
-  if(cod[1] != 6){
+  if (cod[1] != 6) {
     for (i = 19; i <= 26; i++) {
-      aux[i-19] = cod[i];
+      aux[i - 19] = cod[i];
     }
-  }else{
+  } else {
     for (i = 23; i <= 30; i++) {
-      aux[i-23] = cod[i];
+      aux[i - 23] = cod[i];
     }
   }
-  console.log(aux);
-  var a = aux[0]+aux[1]+aux[2]+aux[3];
-  var m = aux[4]+aux[5];
-  var d = aux[6]+aux[7];
+  var a = aux[0] + aux[1] + aux[2] + aux[3];
+  var m = aux[4] + aux[5];
+  var d = aux[6] + aux[7];
   var ano = parseInt(a);
   var mes = parseInt(m);
   var dia = parseInt(d);
-  console.log(ano);
-  console.log(mes);
-  console.log(dia);
-  var data = new Date(ano, mes, dia);
-  console.log(data)
-  var venc = formataData(data);
-  return (venc);
+  if (ano >= 2000 && ano <= 2030) {
+    if (mes >= 1 && mes <= 12) {
+      if (dia > 1 && dia <= 31) {
+        var data = new Date(ano, mes, dia);
+        var venc = formataData(data);
+        return (venc);
+      }
+    }
+  } else {
+    return ("Não possui");
+  };
+
 };
 
 function orgBarra(cod) {
   var aux = [];
-  var i, segval;
+  var i;
   for (i = 0; i < 11; i++) {
     aux[i] = cod[i];
   };
@@ -71,11 +77,10 @@ function orgBarra(cod) {
   for (i = 36; i < 47; i++) {
     aux[i - 3] = cod[i];
   };
-  segval = segvalidacao(aux);
-  if (segval == 1) {
+  if (segvalidacao(aux)) {
     return aux;
   } else {
-    return 0;
+    return false;
   }
 };
 
@@ -107,9 +112,9 @@ function segvalidacao(cod) {
       val = 10;
     }
     if (10 - val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   } else {
     if (dv == 8 || dv == 9) {
@@ -122,19 +127,21 @@ function segvalidacao(cod) {
           }
         };
       };
-      val = cont % 11;
-      if (val == 1) {
+      aux = cont % 11;
+      if (aux == 1 || aux == 0) {
         val = 0;
       } else {
-        if (val == 10) {
-          val = 0;
+        if (aux == 10) {
+          val = 1;
+        } else {
+          val = 11 - aux;
         }
       };
     }
     if (val == chave) {
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
 };
